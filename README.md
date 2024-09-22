@@ -14,7 +14,7 @@
 
 <!-- PROJECT LOGO -->
 
-<br />
+<br>
 
 <p align="center">
   <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer">
@@ -23,6 +23,10 @@
   <h3 align="center">"FRAISEMOE Addons Installer"</h3>
   	<br />
   <p align="center">
+    <br />
+    一个简单的为Nekopara系列游戏安装补丁的应用。
+    <br />
+    <br />
     ⚠本工具为非官方工具，不代表官方立场⚠
     <br />
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer"><strong>探索本项目的文档 »</strong></a>
