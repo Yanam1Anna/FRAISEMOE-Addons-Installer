@@ -91,7 +91,7 @@
 - [HTony03](https://github.com/HTony03)&ensp;&ensp;对于本项目部分源码的重构，逻辑优化，若干功能实现等提供的大力支持
 
 ## 协议
-* 此工具根据 GNU (v3) 通用公共许可证授权。 请参阅 `LICENSE` 了解更多信息。
+* 此工具根据`MIT`许可证授权。 请参阅 `LICENSE` 了解更多信息。
 
 <!-- links -->
 
