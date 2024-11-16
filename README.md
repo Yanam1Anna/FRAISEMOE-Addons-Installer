@@ -72,26 +72,26 @@
 
 ### 版本控制
 
-该项目使用Git进行版本管理，您可以在`repository`参看当前可用版本。
+该项目使用Git进行版本管理，您可以在 `repository` 参看当前可用版本。
 
 ---
 
 ## 注意事项
 - > ### 请勿使用经过二次修改应用，若使用未知来源 / 修改后的应用且损坏到您的个人利益，作者 / 开发人员既不担责。
-- > ### 请遵循所有使用须知文档（FAQ.md）中以及所有本文档中的规则，若您有意/无意违反其中某部分规则，作者 / 开发人员既不担责。
+- > ### 请遵循所有<a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知文档（FAQ.md）</a>中以及所有本文档中的规则，若您有意/无意违反其中某部分规则，作者 / 开发人员既不担责。
 - > ### 本应用免费、开源，如有通过非免费途径获取，请立即向您获取应用的来源申请退款。
 
 ---
 
 ## 作者
 
-- [Yanam1Anna](https://github.com/Yanam1Anna)&ensp;&ensp;Email:`icon.hirasawayui@gmail.com`
+- [Yanam1Anna](https://github.com/Yanam1Anna)&ensp;&ensp;Email: ` icon.hirasawayui@gmail.com ` 
 
 ## 特别鸣谢
 - [HTony03](https://github.com/HTony03)&ensp;&ensp;对于本项目部分源码的重构，逻辑优化，若干功能实现等提供的大力支持
 
 ## 协议
-* 此工具根据`MIT`许可证授权。 请参阅 `LICENSE` 了解更多信息。
+* 此工具根据 `MIT` 许可证授权。 请参阅 `LICENSE` 了解更多信息。
 
 <!-- links -->
 
