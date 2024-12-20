@@ -188,7 +188,7 @@ class Ui_mainwin(object):
     def retranslateUi(self, mainwin):
         mainwin.setWindowTitle(
             QCoreApplication.translate(
-                "mainwin", u"FRAISEMOE Addons Installer V4.2.0.25600", None))
+                "mainwin", u"FRAISEMOE Addons Installer V4.3.0.29456", None))
         self.mainbg.setText("")
         self.Cover_1.setText("")
         self.Cover_2.setText("")

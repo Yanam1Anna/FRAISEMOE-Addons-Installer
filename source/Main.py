@@ -13,7 +13,7 @@ from PySide6.QtGui import QIcon, QPixmap
 from pic_data import img_data
 from GUI import Ui_mainwin
 
-Msgboxtitle = "@FRAISEMOE Addons Installer V4.2.0.25600"
+Msgboxtitle = "@FRAISEMOE Addons Installer V4.3.0.29456"
 
 Packfolder = "./addons"
 
@@ -203,19 +203,19 @@ class MyWindow(QWidget, Ui_mainwin):
 
         # Download
         self.DownloadParameter(
-            'https://disk.lolicon.team/d/CN_Patch_Download_Mirror/vol.1.7z',
+            'https://disk.ovofish.com/f/vLi9/vol.1.7z',
             f'{self.tgtfolder}/NEKOPARA Vol. 1', 'NEKOPARA Vol.1',
             './addons/vol.1.7z', './addons/vol.1/adultsonly.xp3')
         self.DownloadParameter(
-            'https://disk.lolicon.team/d/CN_Patch_Download_Mirror/vol.2.7z',
+            'https://disk.ovofish.com/f/4rCK/vol.2.7z',
             f'{self.tgtfolder}/NEKOPARA Vol. 2', 'NEKOPARA Vol.2',
             './addons/vol.2.7z', './addons/vol.2/adultsonly.xp3')
         self.DownloadParameter(
-            'https://disk.lolicon.team/d/CN_Patch_Download_Mirror/vol.3.7z',
+            'https://disk.ovofish.com/f/qBTY/vol.3.7z',
             f'{self.tgtfolder}/NEKOPARA Vol. 3', 'NEKOPARA Vol.3',
             './addons/vol.3.7z', './addons/vol.3/update00.int')
         self.DownloadParameter(
-            'https://disk.lolicon.team/d/CN_Patch_Download_Mirror/vol.4.7z',
+            'https://disk.ovofish.com/f/d4h4/vol.4.7z',
             f'{self.tgtfolder}/NEKOPARA Vol. 4', 'NEKOPARA Vol.4',
             './addons/vol.4.7z', './addons/vol.4/vol4adult.xp3')
         if not self.CompareHash():
