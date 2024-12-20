@@ -32,12 +32,16 @@
   </a>
   <h3 align="center">"FRAISEMOE Addons Installer"</h3>
   	<br />
-  <p align="center">
+  		<p align="center">
+    		<br />
+      		一个简单的为Nekopara系列游戏安装补丁的应用。
+    		<br />
+      	<br />
+      如果本工具对您有有帮助，欢迎Star⭐~
     <br />
-    一个简单的为Nekopara系列游戏安装补丁的应用。
-    <br />
-    <br />
-    ⚠本工具为非官方工具，不代表官方立场⚠
+    	<br />
+      	⚠本工具为非官方工具，不代表官方立场⚠
+    	<br />
     <br />
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer"><strong>探索本项目的文档 »</strong></a>
     <br />
@@ -46,8 +50,9 @@
     ·
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/issues">提出新特性</a>
     ·
-    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知&常见问题</a>
+    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">👉使用须知&常见问题👈</a>
   </p>
+
 
 <br />
 
@@ -75,10 +80,10 @@
 
 ### **使用步骤**
 
-1. 打开应用后，点击 "开始安装" / "Start Install" 按钮，自动执行补丁的安装程序
+1. 打开应用后，点击 "开始安装" / "Start Install" 按钮，选择对应的安装目录（详见<a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知文档</a>），自动执行补丁的安装程序
     若部分游戏补丁文件已经存在，并且检验Hash状态正常，则跳过该版本的安装，自动执行下个版本的安装任务
 2. 安装任务完成后，将会提示安装结果，确认安装结果后即可关闭应用
-3. 为确保安装效果，安装补丁前**请勿在后台任务中运行游戏**，或安装补丁完成后，**重新启动游戏**
+3. 为确保安装效果，安装补丁前 / 安装补丁过程中**请勿运行游戏**。
 
 ### 版本控制
 
@@ -89,7 +94,7 @@
 ## 注意事项
 - > ### 请勿使用经过二次修改应用，若使用未知来源 / 修改后的应用且损坏到您的个人利益，作者 / 开发人员既不担责。
 - > ### 请遵循所有<a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知文档（FAQ.md）</a>中以及所有本文档中的规则，若您有意/无意违反其中某部分规则，作者 / 开发人员既不担责。
-- > ### 本应用免费、开源，如有通过非免费途径获取，请立即向您获取应用的来源申请退款。
+- > ### 本应用免费、开源，如有通过非免费途径获取，请立即向您获取应用的来源申请退款并积极维权。
 
 ---
 
