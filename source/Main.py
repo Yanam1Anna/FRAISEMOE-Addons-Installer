@@ -5,309 +5,467 @@ import shutil
 import hashlib
 import sys
 import base64
+import psutil
+import ctypes
 
 from PySide6 import QtWidgets, QtCore
-from PySide6.QtCore import Qt, QByteArray
-from PySide6.QtWidgets import QApplication, QWidget, QMessageBox, QProgressBar, QVBoxLayout, QLabel
+from PySide6.QtCore import Qt, QByteArray, Signal
+from PySide6.QtWidgets import (
+    QApplication,
+    QWidget,
+    QMessageBox,
+    QProgressBar,
+    QVBoxLayout,
+    QLabel,
+)
 from PySide6.QtGui import QIcon, QPixmap
+from collections import deque
 from pic_data import img_data
 from GUI import Ui_mainwin
 
-Msgboxtitle = "@FRAISEMOE Addons Installer V4.5.0.30988"
-
-Packfolder = "./addons"
-
-
-def calc_hash(dstfilepath):
-    msg_box = QMessageBox()
-    msg_box.setWindowTitle(f'通知 {Msgboxtitle}')
-    pixmap = QPixmap()
-
-    icon = QIcon()
-    pixmap.loadFromData(QByteArray(base64.b64decode(img_data['icon'])))
-    icon.addPixmap(pixmap)
-
-    msg_box.setWindowIcon(icon)
-    msg_box.setText('\n正在检验文件完整性...\n')
-    msg_box.setStandardButtons(QMessageBox.StandardButton.NoButton)
-    msg_box.show()
-
-    # Force the message box to be painted immediately
-    QApplication.processEvents()
-
-    sha256_hash = hashlib.sha256()
-    with open(dstfilepath, "rb") as f:
-        for byte_block in iter(lambda: f.read(4096), b""):
-            sha256_hash.update(byte_block)
-    # Close the message box after the operation is complete
-    msg_box.close()
-
-    return sha256_hash.hexdigest()
+APP_VERSION = "@FRAISEMOE Addons Installer V4.8.6.17218"
+TEMP = os.getenv("TEMP")
+CACHE = os.path.join(TEMP, "FRAISEMOE")
+PLUGIN = os.path.join(CACHE, "PLUGIN")
+CONFIG_URL = "https://archive.ovofish.com/api/widget/nekopara/download_url.json"
+UA = "Mozilla/5.0 (Linux debian12 Python-Accept) Gecko/20100101 Firefox/114.0"
+SRC_HASHES = {
+    "NEKOPARA Vol.1": "04b48b231a7f34431431e5027fcc7b27affaa951b8169c541709156acf754f3e",
+    "NEKOPARA Vol.2": "b9c00a2b113a1e768bf78400e4f9075ceb7b35349cdeca09be62eb014f0d4b42",
+    "NEKOPARA Vol.3": "2ce7b223c84592e1ebc3b72079dee1e5e8d064ade15723328a64dee58833b9d5",
+    "NEKOPARA Vol.4": "4a4a9ae5a75a18aacbe3ab0774d7f93f99c046afe3a777ee0363e8932b90f36a",
+}
 
 
-# UI
+def admin_status():
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin()
+    except:
+        return False
+
+
+def run_as_admin():
+    script = os.path.abspath(sys.argv[0])
+    params = " ".join([script] + sys.argv[1:])
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, params, None, 1)
+
+
+class DownloadThread(QtCore.QThread):
+    progress = Signal(int)
+    finished = Signal(bool, str)
+
+    def __init__(self, url, _7z_path, parent=None):
+        super().__init__(parent)
+        self.url = url
+        self._7z_path = _7z_path
+
+    def run(self):
+        try:
+            headers = {"User-Agent": UA}
+            r = requests.get(self.url, headers=headers, stream=True, timeout=10)
+            r.raise_for_status()
+            block_size = 64 * 1024
+            total_size = int(r.headers.get("content-length", 0))
+            with open(self._7z_path, "wb") as f:
+                for chunk in r.iter_content(chunk_size=block_size):
+                    f.write(chunk)
+                    self.progress.emit(f.tell() * 100 // total_size)
+            self.finished.emit(True, "")
+        except requests.exceptions.RequestException as e:
+            self.finished.emit(False, f"\n网络请求错误\n\n【错误信息】: {e}\n")
+        except Exception as e:
+            self.finished.emit(False, f"\n未知错误\n\n【错误信息】: {e}\n")
+
+
+def game_process_status(process_name):
+    for proc in psutil.process_iter(["pid", "name"]):
+        try:
+            if process_name.lower() in proc.info["name"].lower():
+                return proc.info["pid"]
+        except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+            pass
+    return None
+
+
+def kill_process(pid):
+    try:
+        process = psutil.Process(pid)
+        process.terminate()
+        process.wait(timeout=5)
+    except (psutil.NoSuchProcess, psutil.AccessDenied, psutil.ZombieProcess):
+        pass
+
+
 class MyWindow(QWidget, Ui_mainwin):
-
     def __init__(self):
         super().__init__()
         self.setupUi(self)
-        self.tgtfolder = ''
-        self.download_stat = {
-            'NEKOPARA Vol.1': False,
-            'NEKOPARA Vol.2': False,
-            'NEKOPARA Vol.3': False,
-            'NEKOPARA Vol.4': False
+        self.selected_folder = ""
+        self.installed_status = {
+            "NEKOPARA Vol.1": False,
+            "NEKOPARA Vol.2": False,
+            "NEKOPARA Vol.3": False,
+            "NEKOPARA Vol.4": False,
         }
-        # Create a folder to store the downloaded files
-        if not os.path.exists(Packfolder):
-            os.makedirs(Packfolder)
-            if not os.path.exists(Packfolder):
-                QMessageBox.critical(self, f'错误 {Msgboxtitle}',
-                                     '\n无法创建安装包存放位置，请检查文件读写权限后再试\n')
+        self.download_queue = deque()
+        self.current_download_thread = None
+
+        game_process_info = {
+            "nekopara_vol1.exe": "NEKOPARA Vol.1",
+            "nekopara_vol2.exe": "NEKOPARA Vol.2",
+            "NEKOPARAvol3.exe": "NEKOPARA Vol.3",
+            "nekopara_vol4.exe": "NEKOPARA Vol.4",
+        }
+
+        for process_name, game_version in game_process_info.items():
+            pid = game_process_status(process_name)
+            if pid:
+                msg_box = QMessageBox()
+                msg_box.setWindowTitle(f"进程检测 {APP_VERSION}")
+                pixmap = QPixmap()
+                pixmap.loadFromData(QByteArray(base64.b64decode(img_data["icon"])))
+                icon = QIcon(pixmap)
+                msg_box.setWindowIcon(icon)
+                msg_box.setText(f"\n检测到 {game_version} 正在运行，是否关闭？\n")
+                yes_button = msg_box.addButton(
+                    "确定", QMessageBox.ButtonRole.AcceptRole
+                )
+                no_button = msg_box.addButton("取消", QMessageBox.ButtonRole.RejectRole)
+                msg_box.setDefaultButton(no_button)
+                msg_box.exec()
+
+                if msg_box.clickedButton() == yes_button:
+                    kill_process(pid)
+                else:
+                    QMessageBox.warning(
+                        self,
+                        f"警告 {APP_VERSION}",
+                        f"\n请关闭 {game_version} 后再运行本程序。\n",
+                    )
+                    self.close()
+                    sys.exit()
+
+        if not os.path.exists(PLUGIN):
+            os.makedirs(PLUGIN)
+            if not os.path.exists(PLUGIN):
+                QMessageBox.critical(
+                    self,
+                    f"错误 {APP_VERSION}",
+                    "\n无法创建缓存位置\n\n使用管理员身份运行或检查文件读写权限\n",
+                )
                 self.close()
                 sys.exit()
 
-        # Buttons
-        self.startbtn.clicked.connect(self.ChooseFileDialog)
-        self.exitbtn.clicked.connect(self.closeEvent)
+        self.startbtn.clicked.connect(self.file_dialog)
+        self.exitbtn.clicked.connect(self.shutdown_app)
 
-    def closeEvent(self, event):
-        self.confirm_quit = True
-        if self.confirm_quit:
-            reply = QMessageBox.question(
-                self, '退出程序', '\n是否确定退出?\n',
-                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-                QMessageBox.StandardButton.No)
-            if reply == QMessageBox.StandardButton.Yes:
-                # event.accept()
-                shutil.rmtree(Packfolder)
-                sys.exit()
-            else:
-                pass
-                # event.ignore()
-        else:
-            # event.accept()
-            shutil.rmtree(Packfolder)
-            sys.exit()
-
-    def download_config(self) -> dict:
-        config_url = 'https://cn-sy1.rains3.com/cloudfile/cloudfile/uploads/2025/01/25/xyXGNdvF_download_config.json'
-
-        try:
-            response = requests.get(config_url, timeout=10)
-            response = response.json()
-
-            url_v1 = response['vol.1.data']['url']
-            url_v2 = response['vol.2.data']['url']
-            url_v3 = response['vol.3.data']['url']
-            url_v4 = response['vol.4.data']['url']
-        except Exception:
-            QMessageBox.critical(self, f"错误 {Msgboxtitle}",f"\n获取下载配置失败\n检查网络状态,或服务器故障\n")
-            return {}
-        return {'vol1':url_v1,'vol2':url_v2,'vol3':url_v3,'vol4':url_v4}
-
-    
-
-    def CheckFileStat(self, basedic):
-        pass
-        self.download_stat = {
-            'NEKOPARA Vol.1': False,
-            'NEKOPARA Vol.2': False,
-            'NEKOPARA Vol.3': False,
-            'NEKOPARA Vol.4': False
+    def get_install_paths(self):
+        return {
+            "NEKOPARA Vol.1": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 1", "adultsonly.xp3"
+            ),
+            "NEKOPARA Vol.2": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 2", "adultsonly.xp3"
+            ),
+            "NEKOPARA Vol.3": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 3", "update00.int"
+            ),
+            "NEKOPARA Vol.4": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 4", "vol4adult.xp3"
+            ),
         }
-        if os.path.exists(f'{basedic}/NEKOPARA Vol. 1/adultsonly.xp3'):
-            if calc_hash(
-                    f'{basedic}/NEKOPARA Vol. 1/adultsonly.xp3'
-            ) == '04b48b231a7f34431431e5027fcc7b27affaa951b8169c541709156acf754f3e':
-                self.download_stat['NEKOPARA Vol.1'] = True
-            else:
-                QMessageBox.warning(self, f"警告 {Msgboxtitle}",
-                                    '\n补丁文件文件校验失败\n即将重新安装当前版本补丁\n')
-                os.remove(f'{basedic}/NEKOPARA Vol. 1/adultsonly.xp3')
 
-        if os.path.exists(f'{basedic}/NEKOPARA Vol. 2/adultsonly.xp3'):
-            if calc_hash(
-                    f'{basedic}/NEKOPARA Vol. 2/adultsonly.xp3'
-            ) == 'b9c00a2b113a1e768bf78400e4f9075ceb7b35349cdeca09be62eb014f0d4b42':
-                self.download_stat['NEKOPARA Vol.2'] = True
-            else:
-                QMessageBox.warning(self, f"警告 {Msgboxtitle}",
-                                    '\n补丁文件文件校验失败\n即将重新安装当前版本补丁\n')
-                os.remove(f'{basedic}/NEKOPARA Vol. 2/adultsonly.xp3')
-
-        if os.path.exists(f'{basedic}/NEKOPARA Vol. 3/update00.int'):
-            if calc_hash(
-                    f'{basedic}/NEKOPARA Vol. 3/update00.int'
-            ) == '2ce7b223c84592e1ebc3b72079dee1e5e8d064ade15723328a64dee58833b9d5':
-                self.download_stat['NEKOPARA Vol.3'] = True
-            else:
-                QMessageBox.warning(self, f"警告 {Msgboxtitle}",
-                                    '\n补丁文件文件校验失败\n即将重新安装当前版本补丁\n')
-                os.remove(f'{basedic}/NEKOPARA Vol. 3/update00.int')
-
-        if os.path.exists(f'{basedic}/NEKOPARA Vol. 4/vol4adult.xp3'):
-            if calc_hash(
-                    f'{basedic}/NEKOPARA Vol. 4/vol4adult.xp3'
-            ) == '4a4a9ae5a75a18aacbe3ab0774d7f93f99c046afe3a777ee0363e8932b90f36a':
-                self.download_stat['NEKOPARA Vol.4'] = True
-            else:
-                QMessageBox.warning(self, f"警告 {Msgboxtitle}",
-                                    '\n补丁文件文件校验失败\n即将重新安装当前版本补丁\n')
-                os.remove(f'{basedic}/NEKOPARA Vol. 4/vol4adult.xp3')
-
-    def ChooseFileDialog(self):
-        self.tgtfolder = QtWidgets.QFileDialog.getExistingDirectory(
-            self, f"选择游戏所在上级目录 {Msgboxtitle}")
-        if not self.tgtfolder:
-            QMessageBox.warning(self, f"通知 {Msgboxtitle}",
-                                "\n尚未选择任何目录，请重新选择目录\n")
+    def file_dialog(self):
+        self.selected_folder = QtWidgets.QFileDialog.getExistingDirectory(
+            self, f"选择游戏所在【上级目录】 {APP_VERSION}"
+        )
+        if not self.selected_folder:
+            QMessageBox.warning(
+                self, f"通知 {APP_VERSION}", "\n未选择任何目录,请重新选择\n"
+            )
             return
-        self.PackParameter()
+        self.download_action()
 
-    def DownloadParameter(self, url, dstfilepath, GV, file_7z_route,
-                          srcfileroute):
-        """
-        install with params
-        :param url: install url
-        :param dstfilepath: dest folder route
-        :param GV: GameVer
-        :param file_7z_route: temp addonfile route,eg: './addons/vol.1.7z'
-        :param srcfileroute: src route,eg: './addons/vol.1/adultsonly.xp3'
-        :return: None
-        """
-        # TODO: check whether 7z file in assets and unzip, install
-        if not os.path.exists(dstfilepath):
-            self.download_stat[GV] = False
-        elif self.download_stat[GV]:
-            QMessageBox.information(self, f"通知 {Msgboxtitle}",
-                                    f"\n{GV} 补丁包已安装\n")
-        else:
-            progress_window = ProgressWindow(self)
-            progress_window.show()
-            try:
-                r = requests.get(url, stream=True, timeout=10)
-                r.raise_for_status()
-                block_size = 64 * 1024
-                progress = 0
-                progress_window.setmaxvalue(
-                    int(r.headers.get('content-length', 0)))
-                with open(file_7z_route, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=block_size):
-                        f.write(chunk)
-                        progress += len(chunk)
-                        progress_window.setprogressbarval(progress)
-                        QApplication.processEvents()
-            except Exception as e:
-                QMessageBox.critical(self, f"错误 {Msgboxtitle}",
-                                     f"\n网络超时，重启程序再试\n错误信息：{e}\n")
-                self.download_stat[GV] = False
-                progress_window.close()
+    def hash_calculate(self, file_path):
+        sha256_hash = hashlib.sha256()
+        with open(file_path, "rb") as f:
+            for byte_block in iter(lambda: f.read(4096), b""):
+                sha256_hash.update(byte_block)
+        return sha256_hash.hexdigest()
+
+    def hash_pop_window(self):
+        msg_box = QMessageBox()
+        msg_box.setWindowTitle(f"通知 {APP_VERSION}")
+        pixmap = QPixmap()
+        pixmap.loadFromData(QByteArray(base64.b64decode(img_data["icon"])))
+        icon = QIcon(pixmap)
+        msg_box.setWindowIcon(icon)
+        msg_box.setText("\n正在检验文件状态...\n")
+        msg_box.setStandardButtons(QMessageBox.StandardButton.NoButton)
+        msg_box.show()
+        QApplication.processEvents()
+        return msg_box
+
+    def pre_hash_compare(self, install_path, game_version, SRC_HASHES):
+        if not os.path.exists(install_path):
+            self.installed_status[game_version] = False
+            return
+
+        msg_box = self.hash_pop_window()
+        file_hash = self.hash_calculate(install_path)
+        msg_box.close()
+
+        if file_hash != SRC_HASHES[game_version]:
+            msg_box = QMessageBox(self)
+            msg_box.setWindowTitle(f"文件校验 {APP_VERSION}")
+            msg_box.setText(
+                f"\n【 当前版本已安装旧版本补丁 -> {game_version} 】\n\n是否重新安装？\n----->取消安装前应确认补丁是否可用<-----\n"
+            )
+            yes_button = msg_box.addButton("确定", QMessageBox.ButtonRole.AcceptRole)
+            no_button = msg_box.addButton("取消", QMessageBox.ButtonRole.RejectRole)
+            msg_box.setDefaultButton(no_button)
+            msg_box.exec()
+            if msg_box.clickedButton() == yes_button:
+                self.installed_status[game_version] = False
                 return
-
-            # Extract the compressed file to the specified directory
-            archive = py7zr.SevenZipFile(file_7z_route, mode='r')
-            # Decompression directory of compressed files
-            archive.extractall(path=r'./addons')
-            archive.close()
-            shutil.copy(srcfileroute, dstfilepath)
-            self.download_stat[GV] = True
-            QMessageBox.information(self, f"通知 {Msgboxtitle}",
-                                    f"\n{GV} 补丁包安装完成\n")
-
-    def PackParameter(self):
-        # Get the installing stat
-        self.CheckFileStat(self.tgtfolder)
-        config = self.download_config()
-        if not config:
-            QMessageBox.critical(self, f'错误 {Msgboxtitle}',
-                                     '\n网络连接错误,重启应用再试\n')
-            return
-        
-        # Download
-        self.DownloadParameter(
-            config['vol1'],
-            f'{self.tgtfolder}/NEKOPARA Vol. 1', 'NEKOPARA Vol.1',
-            './addons/vol.1.7z', './addons/vol.1/adultsonly.xp3')
-        self.DownloadParameter(
-            config['vol2'],
-            f'{self.tgtfolder}/NEKOPARA Vol. 2', 'NEKOPARA Vol.2',
-            './addons/vol.2.7z', './addons/vol.2/adultsonly.xp3')
-        self.DownloadParameter(
-            config['vol3'],
-            f'{self.tgtfolder}/NEKOPARA Vol. 3', 'NEKOPARA Vol.3',
-            './addons/vol.3.7z', './addons/vol.3/update00.int')
-        self.DownloadParameter(
-            config['vol4'],
-            f'{self.tgtfolder}/NEKOPARA Vol. 4', 'NEKOPARA Vol.4',
-            './addons/vol.4.7z', './addons/vol.4/vol4adult.xp3')
-        if not self.CompareHash():
-            QMessageBox.critical(self, f"错误 {Msgboxtitle}",
-                                 "\n文件损坏，无法通过文件校验\n请重新启动程序\n")
-            return
-
-        # Count the installation results
-        installver = ''
-        installnum = 0
-        failver = ''
-        failnum = 0
-        for i in list(self.download_stat.keys()):
-            if self.download_stat[i]:
-                installver += f"{i}\n"
-                installnum += 1
             else:
-                failver += f"{i}\n"
-                failnum += 1
+                self.installed_status[game_version] = True
+                return
+        else:
+            self.installed_status[game_version] = True
+            return
 
-        QMessageBox.information(
-            self, f"完成 {Msgboxtitle}", f"\n安装结果：\n"
-            f"安装成功数：{installnum}    安装失败数：{failnum}\n\n"
-            f"安装成功的版本：\n"
-            f"{installver}\n"
-            f"尚未持有的版本：\n"
-            f"{failver}\n")
-
-    def CompareHash(self):
-        # Src files hash
-        src_hash_v1 = '04b48b231a7f34431431e5027fcc7b27affaa951b8169c541709156acf754f3e'
-        src_hash_v2 = 'b9c00a2b113a1e768bf78400e4f9075ceb7b35349cdeca09be62eb014f0d4b42'
-        src_hash_v3 = '2ce7b223c84592e1ebc3b72079dee1e5e8d064ade15723328a64dee58833b9d5'
-        src_hash_v4 = '4a4a9ae5a75a18aacbe3ab0774d7f93f99c046afe3a777ee0363e8932b90f36a'
-        # Check hash value
+    def late_hash_compare(self, SRC_HASHES):
+        install_paths = self.get_install_paths()
         passed = True
-        passlist = []
-        for i in list(self.download_stat.keys()):
-            if self.download_stat[i]:
-                passlist.append(i)
-        for i in passlist:
-            if i == 'NEKOPARA Vol.1':
-                if calc_hash(f'{self.tgtfolder}/NEKOPARA Vol. 1/adultsonly.xp3'
-                             ) != src_hash_v1:
+        for game, hash_value in SRC_HASHES.items():
+            if self.installed_status.get(game):
+                msg_box = self.hash_pop_window()
+                file_hash = self.hash_calculate(install_paths[game])
+                msg_box.close()
+                if file_hash != hash_value:
                     passed = False
-            elif i == 'NEKOPARA Vol.2':
-                if calc_hash(f'{self.tgtfolder}/NEKOPARA Vol. 2/adultsonly.xp3'
-                             ) != src_hash_v2:
-                    passed = False
-            elif i == 'NEKOPARA Vol.3':
-                if calc_hash(f'{self.tgtfolder}/NEKOPARA Vol. 3/update00.int'
-                             ) != src_hash_v3:
-                    passed = False
-            elif i == 'NEKOPARA Vol.4':
-                if calc_hash(f'{self.tgtfolder}/NEKOPARA Vol. 4/vol4adult.xp3'
-                             ) != src_hash_v4:
-                    passed = False
+                    break
         return passed
 
+    def download_config(self) -> dict:
+        try:
+            headers = {"User-Agent": UA}
+            response = requests.get(CONFIG_URL, headers=headers, timeout=10)
+            response.raise_for_status()
+            response = response.json()
+            return {f"vol{i+1}": response[f"vol.{i+1}.data"]["url"] for i in range(4)}
+        except requests.exceptions.RequestException as e:
+            QMessageBox.critical(
+                self,
+                f"错误 {APP_VERSION}",
+                f"\n下载配置获取失败\n\n网络状态异常或服务器故障\n\n【错误信息】：{e}\n",
+            )
+        except Exception as e:
+            QMessageBox.critical(
+                self,
+                f"错误 {APP_VERSION}",
+                f"\n下载配置获取失败\n\n未知错误\n\n【错误信息】：{e}\n",
+            )
+        return {}
 
-# Progress
+    def download_setting(self, url, game_folder, game_version, _7z_path, plugin_path):
+        game_exe = {
+            "NEKOPARA Vol.1": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 1", "nekopara_vol1.exe"
+            ),
+            "NEKOPARA Vol.2": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 2", "nekopara_vol2.exe"
+            ),
+            "NEKOPARA Vol.3": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 3", "NEKOPARAvol3.exe"
+            ),
+            "NEKOPARA Vol.4": os.path.join(
+                self.selected_folder, "NEKOPARA Vol. 4", "nekopara_vol4.exe"
+            ),
+        }
+
+        if (
+            game_version not in game_exe
+            or not os.path.exists(game_exe[game_version])
+            or self.installed_status[game_version]
+        ):
+            self.next_download_task()
+            return
+
+        progress_window = ProgressWindow(self)
+        progress_window.show()
+
+        self.current_download_thread = DownloadThread(url, _7z_path, self)
+        self.current_download_thread.progress.connect(progress_window.setprogressbarval)
+        self.current_download_thread.finished.connect(
+            lambda success, error: self.install_setting(
+                success,
+                error,
+                progress_window,
+                game_folder,
+                game_version,
+                _7z_path,
+                plugin_path,
+            )
+        )
+        self.current_download_thread.start()
+
+    def install_setting(
+        self,
+        success,
+        error,
+        progress_window,
+        game_folder,
+        game_version,
+        _7z_path,
+        plugin_path,
+    ):
+        progress_window.close()
+        if success:
+            try:
+                msg_box = self.hash_pop_window()
+                QApplication.processEvents()
+
+                with py7zr.SevenZipFile(_7z_path, mode="r") as archive:
+                    archive.extractall(path=PLUGIN)
+                shutil.copy(plugin_path, game_folder)
+                self.installed_status[game_version] = True
+                QMessageBox.information(
+                    self, f"通知 {APP_VERSION}", f"\n{game_version} 补丁已安装\n"
+                )
+            except py7zr.Bad7zFile as e:
+                QMessageBox.critical(
+                    self,
+                    f"错误 {APP_VERSION}",
+                    f"\n文件损坏\n\n【错误信息】：{e}\n",
+                )
+            except FileNotFoundError as e:
+                QMessageBox.critical(
+                    self,
+                    f"错误 {APP_VERSION}",
+                    f"\n文件不存在\n\n【错误信息】：{e}\n",
+                )
+            except Exception as e:
+                QMessageBox.critical(
+                    self,
+                    f"错误 {APP_VERSION}",
+                    f"\n文件操作失败，请重试\n\n【错误信息】：{e}\n",
+                )
+            finally:
+                msg_box.close()
+        else:
+            QMessageBox.critical(
+                self,
+                f"错误 {APP_VERSION}",
+                f"\n文件获取失败\n网络状态异常或服务器故障\n\n【错误信息】：{error}\n",
+            )
+
+        self.next_download_task()
+
+    def download_action(self):
+        install_paths = self.get_install_paths()
+        for game_version, install_path in install_paths.items():
+            self.pre_hash_compare(install_path, game_version, SRC_HASHES)
+        if self.late_hash_compare(SRC_HASHES):
+            config = self.download_config()
+            if not config:
+                QMessageBox.critical(
+                    self, f"错误 {APP_VERSION}", "\n网络状态异常或服务器故障，请重试\n"
+                )
+                return
+            for i in range(1, 5):
+                game_version = f"NEKOPARA Vol.{i}"
+                if self.installed_status[game_version] == False:
+                    url = config[f"vol{i}"]
+                    game_folder = os.path.join(
+                        self.selected_folder, f"NEKOPARA Vol. {i}"
+                    )
+                    _7z_path = os.path.join(PLUGIN, f"vol.{i}.7z")
+                    plugin_path = os.path.join(
+                        PLUGIN,
+                        f"vol.{i}",
+                        [
+                            "adultsonly.xp3",
+                            "adultsonly.xp3",
+                            "update00.int",
+                            "vol4adult.xp3",
+                        ][i - 1],
+                    )
+                    self.download_queue.append(
+                        (url, game_folder, game_version, _7z_path, plugin_path)
+                    )
+            self.next_download_task()
+
+    def next_download_task(self):
+        if not self.download_queue:
+            self.show_result()
+            return
+
+        url, game_folder, game_version, _7z_path, plugin_path = (
+            self.download_queue.popleft()
+        )
+        self.download_setting(url, game_folder, game_version, _7z_path, plugin_path)
+
+    def show_result(self):
+        installed_version = "\n".join(
+            [i for i in self.installed_status if self.installed_status[i]]
+        )
+        failed_ver = "\n".join(
+            [i for i in self.installed_status if not self.installed_status[i]]
+        )
+
+        QMessageBox.information(
+            self,
+            f"完成 {APP_VERSION}",
+            f"\n安装结果：\n"
+            f"安装成功数：{len(installed_version.splitlines())}    安装失败数：{len(failed_ver.splitlines())}\n\n"
+            f"安装成功的版本：\n"
+            f"{installed_version}\n"
+            f"尚未持有的版本：\n"
+            f"{failed_ver}\n",
+        )
+
+    def shutdown_app(self):
+        msg_box = QMessageBox(self)
+        msg_box.setWindowTitle("退出程序")
+        msg_box.setText("\n是否确定退出?\n")
+        yes_button = msg_box.addButton("确定", QMessageBox.ButtonRole.AcceptRole)
+        no_button = msg_box.addButton("取消", QMessageBox.ButtonRole.RejectRole)
+        msg_box.setDefaultButton(no_button)
+        msg_box.exec()
+
+        if msg_box.clickedButton() == yes_button:
+            if (
+                self.current_download_thread
+                and self.current_download_thread.isRunning()
+            ):
+                QMessageBox.critical(
+                    self,
+                    f"错误 {APP_VERSION}",
+                    "\n当前有下载任务正在进行，完成后再试。\n",
+                )
+                return
+
+            if os.path.exists(PLUGIN):
+                try:
+                    shutil.rmtree(PLUGIN)
+                except Exception as e:
+                    QMessageBox.critical(
+                        self,
+                        f"错误 {APP_VERSION}",
+                        f"\n清理缓存失败\n\n【错误信息】：{e}\n",
+                    )
+            sys.exit()
+
+
 class ProgressWindow(QtWidgets.QDialog):
 
     def __init__(self, parent=None):
         super(ProgressWindow, self).__init__(parent)
-        self.setWindowTitle(f"下载进度 {Msgboxtitle}")
+        self.setWindowTitle(f"下载进度 {APP_VERSION}")
         self.resize(400, 100)
         self.progress_bar_max = 100
-        # Disable close button and system menu
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowCloseButtonHint)
         self.setWindowFlags(self.windowFlags() & ~Qt.WindowSystemMenuHint)
 
@@ -329,7 +487,10 @@ class ProgressWindow(QtWidgets.QDialog):
             QtCore.QTimer.singleShot(2000, self.close)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
+    if not admin_status():
+        run_as_admin()
+        sys.exit()
     app = QApplication([])
     window = MyWindow()
     window.show()
