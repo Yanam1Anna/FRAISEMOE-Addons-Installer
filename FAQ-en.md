@@ -1,39 +1,38 @@
-# 🍓FRAISEMOE NEKOPARA Addons Installer🍓
-
 <!-- TOP TITLE -->
+
 <div style="text-align: center;">
-    <h1>NEKOPARA Addons Installer</h1>
-    <h3>A simple application for installing patches for the Nekopara series of games.</h3>
+    <h1>🍓FRAISEMOE NEKOPARA Addons Installer🍓</h1>
+    <h3>A simple application for installing patches in the Nekopara series games.</h3>
 </div>
 
 <!-- INTRODUCTION -->
-<p align="center">
-    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/">
-        <svg role="img" viewBox="0 0 25 25" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-        </svg>
-        Github
-    </a> |
-    <a href="https://www.bilibili.com/video/BV1hn9UYwE6p/">
-        <svg role="img" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373Z"/>
-        </svg>
-        Bilibili
+<div align="center" style="margin-top: 20px; margin-bottom: 20px;">
+  <img src="https://raw.githubusercontent.com/Yanam1Anna/FRAISEMOE-Addons-Installer/master/introduction_imgs/main.png" alt="FRAISEMOE Logo" />
+  <h2 style="margin: 10px 0 5px 0; font-weight: bold; color: #e75480;">🍓 FRAISEMOE NEKOPARA Addons Installer 🍓</h2>
+  <p style="font-size: 1.1em; color: #555;">A simple application for installing patches for the Nekopara series games.</p>
+  <p>
+    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/" style="margin-right: 15px;">
+      <img src="https://img.shields.io/github/stars/Yanam1Anna/FRAISEMOE-Addons-Installer?style=social" alt="GitHub stars" />
+      GitHub
     </a>
-</p>
-<p align="center">
+    <a href="https://www.bilibili.com/video/BV1hn9UYwE6p/" style="margin-right: 15px;">
+      <img src="https://img.shields.io/badge/Bilibili-Video-00A1D6?logo=bilibili&logoColor=white" alt="Bilibili" />
+      Bilibili
+    </a>
+  </p>
+  <p>
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">Chinese</a> | 
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ-en.md">English</a>
-</p>
-
-<div style="text-align: center;">
-    <h5><b><u>Please strictly adhere to all regulations in the <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">Usage Guidelines Document</a>. If violated, the developers will not be held responsible.</u></b></h5>
-    <h5><b><u>This tool is intended solely for educational and communication purposes; please do not use it for commercial purposes.</u></b></h5>
+  </p>
+  <blockquote style="color: #c00; font-weight: bold; border-left: 4px solid #e75480; background: #fff0f5; padding: 10px;">
+    Please comply strictly all provisions of the <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">User Guide Document</a> are to be followed, In case of violations, all developers shall not bear any responsibility.<br>
+    The use of this tool is solely for learning and communication purposes, please do not use it for commercial purposes.。
+  </blockquote>
 </div>
 
 ---
 
-## 🎮 Supported Games:
+## 🎮 Compatible Games:
 
 - **NEKOPARA Vol. 1**
 - **NEKOPARA Vol. 2**
@@ -42,171 +41,195 @@
 
 ---
 
-⚠️ **Special Notice:**
+⛔ **Important Notice:**
 
-> **1. NEKOPARA Vol. 0 & NEKOPARA Extra are not supported for patch installation ❗**
+> **1. NEKOPARA Vol. 0 & NEKOPARA Extra are NOT compatible with patch installation ❗**
 
-> **2. Patches will not be installed for games you do not own ❗**
+> **2. Games that you don't currently own will not be patched ❗**
 
-> **3. This tool is only for patch installation and does not install games ❗ It is limited to Windows systems ❗**
+> **3. This tool is only used for patch installation, NOT for game installation ❗ and only works on Windows systems ❗**
 
-> **4. The tool requires administrator privileges to run ❗
-> Reason: To prevent users from running the game while using this tool, which can affect the installation process, the tool checks and closes any running game processes before proceeding ❗**
+> **4. The tool requires administrator privileges to run ❗  
+> Reason: To prevent issues caused by running the game while using the tool, the installer will check for running game processes and attempt to close them when launching the application ❗**
 
-> **5. Before using this tool, you need to understand the basic knowledge of patch installation:**
+> **5. Before using this tool, you must understand basic patch installation knowledge:**
 >
-> **5-1. Why is it necessary to install patches? What content is included in the patches?**
+> **5-1. Why should a patch be installed? What does the patch contain?**
 >
-> **5-2. Based on the information provided in the documentation, consider why these errors occur or why the installation fails?**
+> **5-2. Based on the content in this document, think about why these errors occur or why the installation failed?**
 >
-> **5-3. After successfully installing the patch, how do you troubleshoot related settings to confirm if the installation was successful?**
+> **5-3. After successfully installing the patch, how can you troubleshoot patch-related settings to confirm successful installation?**
 >
-> **_If you are completely unfamiliar with the above knowledge, please refrain from using this tool or refer to tutorial videos. If you have already downloaded this tool, it is recommended to move it to the recycle bin and delete it._**
+> ***If you are completely unfamiliar with the above topics, please refrain from using this tool or refer to tutorial videos. If you have already downloaded this tool, we recommend moving it to the Recycle Bin and deleting it.***
+
+> **6. Please ensure that you are using the latest version of the application (please regularly check for updates at the mirror site or GitHub). ❗**
 
 ---
 
-## 🔄 Usage Instructions/Process:
+## **🔄 Usage Instructions / Process:**
 
 1. Download "FRAISEMOE Addons Installer.exe" from the repository.
-2. **Close any running instances of the [supported games](#supported-games).**
-3. If prompted to run as an administrator, grant administrative privileges. **If administrative privileges cannot be obtained, the application will not run and will exit automatically.**
-4. If prompted to close any running games, select "Yes". **If the running games cannot be closed, the application will not run and will exit automatically.**
-5. After entering the application, choose "Start Install", and select **the parent directory of the game directory**.
+2. **Close any [compatible games](#兼容游戏) currently running.**
+3. If the application asks whether to run with administrator privileges, allow it. **If administrator privileges cannot be obtained, the application will fail to run and exit automatically.**
+4. If the application asks whether to close running games, choose "Yes". **If the running games cannot be closed, the application will fail to run and exit automatically.**
+5. Once inside the application, select "Start Install", then choose the **parent directory of the game folder**.
 
-   > **Important Note 1** ❓ What is the "parent directory of the game directory"? How do I obtain it?
-   > For Steam platform, find the "Library" option at the top, then locate the [supported games list](#supported-games) in the left game list; right-click on the game, choose "Manage" -> "Browse Local Files" to get the game directory. In the address bar, click the "←" button in the File Explorer. If you see the game folder (e.g., "NEKOPARA Vol. 1") in the File Explorer, the current directory is the parent directory of the game directory; copy the path from the address bar.
+   > **Important Note 1** ❓ What is a "game folder's parent directory"? How can I obtain it?
+   > Take Steam as an example: go to the "Library" section at the top, then find the list of [games compatible with patch installation](#兼容游戏) in your left-side game list; right-click any of these games, select "Manage" -> "Browse Local Files", which will open the game directory. Then click the "←" button in the address bar, and if you see the [game folder such as "NEKOPARA Vol. 1"](#兼容游戏), this directory is the parent directory of the game folder. Select and copy the entire path in the address bar.
 
-   > **Important Note 2** ❓ How do I use this tool for third-party installed games?
-   > For third-party installations with non-fixed paths, manually copy the parent directory of the game directory, similar to the method used for Steam-installed games.
+   > **Important Note 2** ❓ How to use this tool if the game was installed via third-party methods?
+   > Since third-party installations may vary in path, please manually copy the path of the parent directory of the game folder, following the same method as for Steam.
 
-   > Example (for reference only, do not copy directly):
-   > Game folder: C:\ (drive letter may vary)\Steam\steamapps\common\NEKOPARA Vol. 1
-   > Parent directory of the game folder: C:\ (drive letter may vary)\Steam\steamapps\common
+   > Example (for demonstration only, please do not copy directly):
+   > Game folder: C:(drive letter varies)\Steam\steamapps\common\NEKOPARA Vol. 1
+   > Parent directory of the game folder: C:(drive letter varies)\Steam\steamapps\common
 
-6. In the directory selection page, paste the copied path into the **address bar** of the File Explorer and click "Select Folder". **(Ensure that the text in the lower folder selection box matches the last folder name in the path; if not, reselect the folder).**
+6. Paste the previously copied path into the **address bar** of the folder selection dialog in the installer. Click "Select Folder".  
+**Note: Ensure the folder name displayed below matches the last folder name in the path. If there is a mismatch, re-select the folder.**
 
-   > √ Correct example (for reference only, do not copy directly):
-   > Path entered in the address bar: C:\ (drive letter may vary)\Steam\steamapps\common
-   > Folder name below: common
+   > √ Correct Example (for demonstration only, please do not copy directly):
+   > Path entered in the address bar: C:(drive letter varies)\Steam\steamapps\common
+   > Folder name displayed below: common
 
-7. After selecting the folder, you may encounter the following situations:
+7. After selecting the folder, you might encounter the following situations:
 <table>
     <tr>
         <td><h5>Status</h5></td>
         <td><h5>Action</h5></td>
     </tr>
     <tr>
-        <td>Game exists but patch is not installed</td>
-        <td>Proceed with the download task</td>
+        <td>The game exists, but no patch has been installed yet.</td>
+        <td>Proceed with downloading patches directly.</td>
     </tr>
     <tr>
-        <td>Game exists,<br />but patch has been installed from another source or patch files are corrupted</td>
-        <td>Ask whether to reinstall the patch using this tool. If the patch from another source is usable, you can choose not to reinstall.</td>
+        <td>The game exists, but the patch has already been installed from another source or the patch file is corrupted.</td>
+        <td>Prompt asking whether to reinstall the patch via this tool. If the other source's patch works fine, you may skip reinstallation.</td>
     </tr>
     <tr>
-        <td>Game does not exist</td>
-        <td>Skip the patch installation step</td>
+        <td>The game does not exist.</td>
+        <td>Skip the patch installation process.</td>
     </tr>
     <tr>
-        <td>Game exists,<br />but the corresponding version patch cannot be installed using this tool</td>
-        <td>Repeat the installation steps</td>
+        <td>The game exists, but the current tool version cannot install the correct patch version.</td>
+        <td>Repeat the installation steps outlined earlier.</td>
     </tr>
 </table>
 
-8. Confirm the final installation result, then choose "Exit".
-9. Go to the game and check if there are more options in the "Settings" section. Or if you have previously entered an additional episode and have it in the "EXTRA" option, the patch has been successfully installed. If none of the above happens, repeat the installation steps.
+8. Confirm the final installation result and select "Exit".
+9. Launch the game and check whether more options appear under the "Settings" menu. Alternatively, if you've accessed extra storylines and they appear under the "EXTRA" option, the patch has likely been installed successfully. If no such changes are visible, repeat the installation steps.
 
 ---
 
 ## 🔰 Software Features:
 
-- Detects the patch status of the [supported games](#supported-games) and compares the [Hash(SHA-256)](#hashsha-256-checksum) to determine if the patch file is intact. If the patch file from another source is damaged, it asks whether to reinstall the patch, deletes the old patch file, downloads the patch package, and reinstalls it.
-- Detects all uninstalled versions and executes the installation tasks.
+- Detects the patch status of [compatible games](#兼容游戏) and verifies the integrity of existing patches using [Hash(SHA-256)](#hashsha-256校验值). If valid, skip installation; if the patch comes from another source or is damaged, prompt whether to reinstall the patch. Choosing to reinstall will delete old files and download/install new ones.
+- Detects all uninstalled versions of patches and proceeds with the installation.
 
 ---
 
-## ❓ Common Issues & Usage Guidelines
+## ❓ Frequently Asked Questions & User Guidelines
 
-<h4><u>During Usage</u></h4>
+---
 
-- The application opens but loads slowly.
-- Please wait patiently; it is not a program crash.
-- Do not open the application multiple times during loading to avoid unnecessary issues.
+<h4><u>[Important] Why did the download fail?</u></h4>
 
-<h4><u>When Prompted That the Application Is Running / Being Used</u></h4>
+1. Please verify that the "final folder" shown in the folder selector's address bar matches the "folder name" shown below the selection button. If they do not match, the tool will not function properly. If this issue is resolved, proceed to the next step.
+2. Please verify that the selected folder contains the [game folders](#使用方式/流程) (refer to step 5 of the usage instructions). If they are missing, the tool will not function properly. If this issue is resolved, proceed to the next step.
+3. Check your network connection and ensure it is stable. If this issue is resolved, proceed to the next step.
+4. If the installation result appears immediately (skipping the installation steps), the path is incorrect and the game cannot be recognized. Please double-check the path and try again. <b>If you're using a non-Steam version, please locate relevant resources yourself for installation.</b>
+5. Please visit the [GitHub page](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer) or the [Domestic Mirror Site Blog](https://blog.ovofish.com/posts/c54d3755.html) to <b>check whether you are using the latest version. If not, the tool may not function properly.</b>
 
-- Due to frequent opening of the application, the Task Manager refreshes incorrectly. Manually enter Task Manager, find "FRAISEMOE-Addons-Installer", end the process, and restart the application.
+---
+
+<h4><u>[Important] Why are my questions ignored by the developer? How to submit an error report?</u></h4>
+
+1. Everyone may be unavailable at times, so please wait patiently for a response or resolution.
+2. The documentation and video tutorials have detailed usage instructions and solutions to common problems. Please check whether your problem or similar ones are covered in the documentation. If they are, responses are generally not provided.
+3. Finally, if you encountered an issue not mentioned in the documentation, <b>please do NOT report the issue through video platforms or blogs via comments or private messages. Please submit an Issue on [GitHub](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/issues).</b>
+4. When submitting an issue report, <b>please include the error message from the error window rather than the final installation result screen,</b> as the latter is intended for users, not developers.
+![issues_main](https://raw.githubusercontent.com/Yanam1Anna/FRAISEMOE-Addons-Installer/refs/heads/master/introduction_imgs/issues_main.png)
+
+---
+
+<h4><u>Usage Process</u></h4>
+
+- The application opens slowly after launch.
+- Please wait patiently; this is normal and does not indicate that the program is unresponsive.
+- Avoid repeatedly opening the application during loading to avoid unnecessary complications.
+
+<h4><u>Error: Application Already Running / Resource Occupied</u></h4>
+
+- Frequent attempts to open the application too quickly may cause Task Manager to fail to refresh properly. Please manually enter Task Manager, find "FRAISEMOE-Addons-Installer", end the process, and restart the application.
 
 <h4><u>1. Download Errors</u></h4>
 
 <table>
     <tr>
-        <td><h5>Common Error Types</h5></td>
+        <td><h5>Error Types</h5></td>
         <td><h5>Error Information</h5></td>
     </tr>
     <tr>
-        <td>Contains "403"/"Access is denied by the server"</td>
-        <td>Access denied by the server. Check if a network proxy (VPN) is set up and reset the network proxy (or exit the relevant VPN proxy program), then "Restart the application" and try again.</td>
+        <td>Includes the word "403"/"Access denied by server"</td>
+        <td>Access denied by server. Check if a network proxy (VPN) is being used, reset the proxy (or close the related program), then restart the application and try again.</td>
     </tr>
     <tr>
-        <td>Contains "port=443"/"The remote host forcibly closes an existing connection"</td>
-        <td>Download interruption. Wait for other tasks to complete file integrity checks/download tasks, then use "Start Install" again, selecting the previously input "parent directory of the game" to install.</td>
+        <td>Includes "port=443"/"Remote host forcibly closed an existing connection"</td>
+        <td>Download interrupted. Wait until the file integrity check/download completes, then rerun the installer using the same "parent directory of the game folder".</td>
     </tr>
     <tr>
-        <td>Contains other text</td>
-        <td>1. Most likely due to abnormal network conditions. Check and fix your network connection before trying again.<br />2. In some cases, it could be a server issue. Report the problem to the author or individuals listed in the credits.</td>
+        <td>Other types of errors</td>
+        <td>1. Usually indicates unstable network conditions. Check and repair the network before retrying.<br />2. In some cases, it may indicate a server failure. Please report the issue via GitHub Issues.</td>
     </tr>
 </table>
 
-<h4><u>2. Issues During Download and Installation</u></h4>
-
+<h4><u>2. Potential Issues During Download and Installation</u></h4>
 <table>
     <tr>
-        <td><h5>Common Issue Types</h5></td>
-        <td><h5>Solution</h5></td>
+        <td><h5>Frequently Encountered Problem Types</h5></td>
+        <td><h5>Solutions</h5></td>
     </tr>
     <tr>
-        <td>Slow download progress with pauses</td>
-        <td>If there is no error message, wait a bit longer.</td>
+        <td>Slow download progress or apparent stall</td>
+        <td>If no error occurs, please wait patiently.</td>
     </tr>
     <tr>
-        <td>File integrity check window flickers</td>
-        <td>This is normal; ignore it.</td>
+        <td>The file integrity check window flashes rapidly</td>
+        <td>This is normal behavior and can be ignored.</td>
     </tr>
     <tr>
-        <td>Download progress window appears, covered by hash value verification window/red close button</td>
-        <td>Some patch files are large, and calculating the hash value takes time. Wait a bit longer. If it takes too long, manually refresh the status by clicking the main window/download progress window/hash value verification window.</td>
+        <td>The download progress window pops up and gets overlapped by the hash verification window/the close button turns red</td>
+        <td>Some patches are large, causing hash verification to take longer. Please wait patiently. If it takes too long, manually refresh the main window/download progress pop-up/hash verification window.</td>
     </tr>
 </table>
 
-<h4><u>3. Unable to Exit the Program During Download</u></h4>
+<h4><u>3. Unable to Exit Program During Download</u></h4>
 
-- To ensure the effectiveness of the patch installation, do not exit the program during download and installation. Any adverse effects caused by violating this
+- Please DO NOT exit the program during download and installation to ensure proper patch application. Any adverse effects caused by exiting prematurely will be borne by the user.
 
-<h4><u>4. Forcefully terminating the program during download</u></h4>
+<h4><u>4. Forced Termination During Download</u></h4>
 
-- It may cause patch file corruption. Upon restarting the application, it will automatically overwrite the downloaded files. Any adverse effects caused by violating this guideline are the user's responsibility.
+- May result in patch file corruption. Restarting the application will overwrite any partially downloaded files. Any adverse effects caused by forced termination will be borne by the user.
 
-<h4><u>5. After multiple downloads and installations of patches, network speed significantly decreases despite normal network status</u></h4>
+<h4><u>5. Network speed significantly decreases after multiple downloads/installations</u></h4>
 
-- To ensure server stability and resource security, download sources are divided into domestic and international sources. To guarantee download quality for more users, domestic sources have a download limit; tasks exceeding this limit will be redirected to international sources for downloading.
+- For stability and security, download sources are divided between domestic and international servers; to ensure better download quality for more users, domestic servers impose download limits, redirecting excessive requests to international servers.
 
-<h4><u>6. Discovering identical/similar repositories/applications outside of this repository</u></h4>
+<h4><u>6. Finding identical/similar repositories/applications outside of this repository</u></h4>
 
-- These might be modified by other developers or use unknown source patch files. Do not download/use such repositories/applications.
+- These may be modified versions created by other developers or use unknown patch sources. Please avoid downloading or using such repositories/applications.
 
-<h4><u>7. Obtaining this application through non-free means before using it</u></h4>
+<h4><u>7. Obtaining this application through non-free means</u></h4>
 
-- This application is free and open-source. If obtained through non-free channels, please immediately request a refund from the source and actively protect your rights.
+- This application is free and open-source. If you obtained it through non-free means, request a refund from the source and consider legal action.
 
 ---
 
-## 💫 HASH(SHA-256) Checksum
+## 💫 HASH(SHA-256) Verification Values
 
 <table>
     <tr>
-        <td><h5>Game Patch</h5></td>
-        <td><h5>SHA-256 (Checksum created: 2024/07-2024-08)</h5></td>
+        <td><h5>Game Patches</h5></td>
+        <td><h5>SHA-256 (Hash Creation Date: 2024/07 - 2024/08)</h5></td>
     </tr>
     <tr>
         <td>Vol.1</td>

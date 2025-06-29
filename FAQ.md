@@ -1,32 +1,33 @@
 <!-- TOP TITLE -->
+
 <div style="text-align: center;">
     <h1>🍓FRAISEMOE NEKOPARA Addons Installer🍓</h1>
     <h3>一个简单的为 Nekopara 系列游戏安装补丁的应用。</h3>
 </div>
 
 <!-- INTRODUCTION -->
-<p align="center">
-    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/">
-        <svg role="img" viewBox="0 0 25 25" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-        </svg>
-        Github
-    </a> |
-    <a href="https://www.bilibili.com/video/BV1hn9UYwE6p/">
-        <svg role="img" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
-            <path d="M17.813 4.653h.854c1.51.054 2.769.578 3.773 1.574 1.004.995 1.524 2.249 1.56 3.76v7.36c-.036 1.51-.556 2.769-1.56 3.773s-2.262 1.524-3.773 1.56H5.333c-1.51-.036-2.769-.556-3.773-1.56S.036 18.858 0 17.347v-7.36c.036-1.511.556-2.765 1.56-3.76 1.004-.996 2.262-1.52 3.773-1.574h.774l-1.174-1.12a1.234 1.234 0 0 1-.373-.906c0-.356.124-.658.373-.907l.027-.027c.267-.249.573-.373.92-.373.347 0 .653.124.92.373L9.653 4.44c.071.071.134.142.187.213h4.267a.836.836 0 0 1 .16-.213l2.853-2.747c.267-.249.573-.373.92-.373.347 0 .662.151.929.4.267.249.391.551.391.907 0 .355-.124.657-.373.906zM5.333 7.24c-.746.018-1.373.276-1.88.773-.506.498-.769 1.13-.786 1.894v7.52c.017.764.28 1.395.786 1.893.507.498 1.134.756 1.88.773h13.334c.746-.017 1.373-.275 1.88-.773.506-.498.769-1.129.786-1.893v-7.52c-.017-.765-.28-1.396-.786-1.894-.507-.497-1.134-.755-1.88-.773zM8 11.107c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c0-.373.129-.689.386-.947.258-.257.574-.386.947-.386zm8 0c.373 0 .684.124.933.373.25.249.383.569.4.96v1.173c-.017.391-.15.711-.4.96-.249.25-.56.374-.933.374s-.684-.125-.933-.374c-.25-.249-.383-.569-.4-.96V12.44c.017-.391.15-.711.4-.96.249-.249.56-.373.933-.373Z"/>
-        </svg>
-        Bilibili
+<div align="center" style="margin-top: 20px; margin-bottom: 20px;">
+  <img src="https://raw.githubusercontent.com/Yanam1Anna/FRAISEMOE-Addons-Installer/master/introduction_imgs/main.png" alt="FRAISEMOE Logo" />
+  <h2 style="margin: 10px 0 5px 0; font-weight: bold; color: #e75480;">🍓 FRAISEMOE NEKOPARA Addons Installer 🍓</h2>
+  <p style="font-size: 1.1em; color: #555;">一个简单的为 Nekopara 系列游戏安装补丁的应用。</p>
+  <p>
+    <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/" style="margin-right: 15px;">
+      <img src="https://img.shields.io/github/stars/Yanam1Anna/FRAISEMOE-Addons-Installer?style=social" alt="GitHub stars" />
+      GitHub
     </a>
-</p>
-<p align="center">
+    <a href="https://www.bilibili.com/video/BV1hn9UYwE6p/" style="margin-right: 15px;">
+      <img src="https://img.shields.io/badge/Bilibili-视频讲解-00A1D6?logo=bilibili&logoColor=white" alt="Bilibili" />
+      Bilibili
+    </a>
+  </p>
+  <p>
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">中文</a> | 
     <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ-en.md">English</a>
-</p>
-
-<div style="text-align: center;">
-    <h5><b><u>请严格遵守 <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知文档</a> 的所有条例，如有违反，全体开发人员不承担任何责任。</u></b></h5>
-    <h5><b><u>本工具的使用性质仅供学习交流使用，请勿用于商业用途</u></b></h5>
+  </p>
+  <blockquote style="color: #c00; font-weight: bold; border-left: 4px solid #e75480; background: #fff0f5; padding: 10px;">
+    请严格遵守 <a href="https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/blob/master/FAQ.md">使用须知文档</a> 的所有条例，如有违反，全体开发人员不承担任何责任。<br>
+    本工具的使用性质仅供学习交流使用，请勿用于商业用途。
+  </blockquote>
 </div>
 
 ---
@@ -60,6 +61,8 @@
 > **5-3. 安装补丁成功后，如何排查补丁的相关设置，确认是否安装成功？**
 >
 > ***如果以上知识您对此一无所知，请不要使用本工具或查看教程视频，如果已下载本工具，则推荐将本工具移动到回收站并删除。***
+
+> **6. 请确保使用的应用版本是最新版本（请定期到镜像站或GitHub中检查是否有更新并下载）❗**
 
 ---
 
@@ -125,6 +128,28 @@
 
 ## ❓ 常见问题 & 使用须知
 
+---
+
+<h4><u>【重要】为什么下载失败？</u></h4>
+
+1. 请检查“文件夹选择器”中，上方地址栏中“最终文件夹”，和下方的“文件夹名称”（选择文件夹按钮上方）是否一致。若不一致则无法正常工作。若此条故障已经排除，请继续下一步。
+2. 请检查所选择的文件夹中是否存在[游戏文件夹](#使用方式/流程)（参考使用流程中的第五条），若游戏文件夹不存在则无法正常工作。若不一致则无法正常工作。若此条故障已经排除，请继续下一步。
+3. 请检查网络环境是否正常，网络连接是否通畅。 若此条故障已经排除，请继续下一步。
+4. 如果直接显示安装结果（即跳过了安装步骤），则证明路径有误，无法识别游戏存在，请再次检查路径并重试。<b>如果你使用的是非Steam版本，请自行寻找相关资源进行安装.</b>
+5. 请到[GitHub](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer)或[国内镜像站博客](https://blog.ovofish.com/posts/c54d3755.html)中，<b>检查使用的是否是最新版本，若应用不是为最新版本则无法正常工作。</b>
+
+---
+
+<h4><u>【重要】为什么开发者无视我的问题？如何提交错误报告？</u></h4>
+
+1. 首先，每个人都会有没空的时候，请耐心等待回复或问题处理。
+2. 其次，文档和视频中已详细介绍了使用方法和常见问题解决方式，请检查你遇到的问题，或相似类别的问题是否存在于文档中，如果存在，一般不回复处理。
+3. 最后，如果遇到了未提及的问题，<b>请勿在视频站内或博客站内以评论，私信等方式报告你的问题，请到[GitHub中提交Issues](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/issues)。</b>
+4. 提交问题报告时，<b>请附上下载报错窗口的报错信息，而不是安装最终结果显示，</b>安装结果显示是给用户看的，不是给开发者看的。
+![issues_main](https://raw.githubusercontent.com/Yanam1Anna/FRAISEMOE-Addons-Installer/refs/heads/master/introduction_imgs/issues_main.png)
+
+---
+
 <h4><u>使用过程</u></h4>
 
 - 应用打开已经打开，但是加载缓慢。
@@ -152,9 +177,10 @@
     </tr>
     <tr>
         <td>包含其他字样</td>
-        <td>1.多为用户网络状态异常，检查网络状态并修复后再试。<br />2.部分情况为服务器故障，届时请通过作者或致谢名单中的人员报告问题。</td>
+        <td>1.多为用户网络状态异常，检查网络状态并修复后再试。<br />2.部分情况为服务器故障，届时请通过GitHub Issues报告问题。</td>
     </tr>
 </table>
+
 
 <h4><u>2. 下载与安装过程中可能遇到的问题</u></h4>
 <table>
