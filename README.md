@@ -69,9 +69,11 @@
 
 ### 📥 安装
 
-请从 [应用发布页面](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/releases) 下载最新版本的应用程序。
+1. 请从 [应用发布页面](https://github.com/Yanam1Anna/FRAISEMOE-Addons-Installer/releases) 下载最新版本的应用程序。
 
 ![preview](https://raw.githubusercontent.com/Yanam1Anna/FRAISEMOE-Addons-Installer/master/introduction_imgs/preview.png)
+
+2. 【中国大陆用户可选】请从[国内镜像站](https://blog.ovofish.com/posts/c54d3755.html)下载。（每小时同步至国内镜像站。如遇服务器维护，无法下载的情况，请使用方式1下载。）
 
 ### ❗ 使用步骤
 
@@ -102,8 +104,15 @@
 
 ## 🎉 特别鸣谢
 
+###   开发协助（排名不分先后）
+
 - [HTony03](https://github.com/HTony03)：对于本项目部分源码的重构、逻辑优化和功能实现提供了大力支持。
+
 - [Akatsuki Misaki](https://github.com/Akatsuki-Misaki)：对于本项目云端资源存储提供了大力支持。
+
+### 用户赞助（排名不分先后）
+
+- @子砚、@I See以及其他二位匿名用户。
 
 ## 📖 协议
 

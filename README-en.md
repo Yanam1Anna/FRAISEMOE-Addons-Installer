@@ -104,8 +104,14 @@ This project uses Git for version control. You can view the available versions o
 
 ## 🎉 Acknowledgements
 
+###  Development assistance (in no particular order)
+
 - [HTony03](https://github.com/HTony03): Provided significant support in refactoring parts of the source code, optimizing logic, and implementing features.
 - [Akatsuki Misaki](https://github.com/Akatsuki-Misaki): Provided significant support for cloud resource storage.
+
+###  User sponsorship (in no particular order)
+
+- @子砚、@I See And two other anonymous users as well.
 
 ## 📖 License
 
