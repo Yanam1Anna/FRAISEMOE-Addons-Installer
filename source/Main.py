@@ -59,6 +59,14 @@ app_data = {
             "install_path": "NEKOPARA Vol. 4/vol4adult.xp3",
             "plugin_path": "vol.4/vol4adult.xp3",
         },
+        "NEKOPARA After": {
+            "exe": "nekopara_after.exe",
+            "hash": "eb26ff6850096a240af8340ba21c5c3232e90f29fb8191e24b6ce701acae0aa9",
+            "install_path": "NEKOPARA After/afteradult.xp3",
+            "plugin_path": "after/afteradult.xp3",
+            "sig_path": "after/afteradult.xp3.sig"
+        },
+
     },
 }
 
@@ -190,6 +198,7 @@ class AdminPrivileges:
             "nekopara_vol2.exe",
             "NEKOPARAvol3.exe",
             "nekopara_vol4.exe",
+            "nekopara_after.exe",
         ]
 
     # 检查管理员权限
@@ -332,6 +341,7 @@ class MyWindow(QWidget, Ui_mainwin):
         self.setupUi(self)
         self.selected_folder = ""
         self.installed_status = {f"NEKOPARA Vol.{i}": False for i in range(1, 5)}
+        self.installed_status["NEKOPARA After"] = False
         self.download_queue = deque()
         self.current_download_thread = None
         self.hash_manager = HashManager(BLOCK_SIZE)
@@ -385,6 +395,8 @@ class MyWindow(QWidget, Ui_mainwin):
                 raise ValueError("配置文件数据异常")
             return {
                 f"vol{i+1}": config_data[f"vol.{i+1}.data"]["url"] for i in range(4)
+            } | {
+                "after": config_data["after.data"]["url"]
             }
         except requests.exceptions.RequestException as e:
             # 获取 HTTP 状态码
@@ -412,27 +424,30 @@ class MyWindow(QWidget, Ui_mainwin):
             )
             return {}
 
-    # 下载参数设置
     def download_setting(self, url, game_folder, game_version, _7z_path, plugin_path):
-        game_exe = {
+        # 修改游戏可执行文件路径获取方式
+        game_exe_paths = {
             game: os.path.join(
-                self.selected_folder, info["install_path"].split("/")[0], info["exe"]
+                self.selected_folder, 
+                info["install_path"].split("/")[0], 
+                info["exe"]
             )
             for game, info in GAME_INFO.items()
         }
-        # 判断游戏是否存在，不存在则跳过
-        if (
-            game_version not in game_exe
-            or not os.path.exists(game_exe[game_version])
-            or self.installed_status[game_version]
-        ):
-            self.installed_status[game_version] = False
-            self.show_result()
+
+        # 检查游戏是否存在
+        if not os.path.exists(game_exe_paths.get(game_version, "")):
+            self.next_download_task()
             return
-        # 下载时显示进度窗口
+
+        # 如果已经安装则跳过
+        if self.installed_status[game_version]:
+            self.next_download_task()
+            return
+
         progress_window = ProgressWindow(self)
         progress_window.show()
-        # 启用下载线程
+
         self.current_download_thread = DownloadThread(url, _7z_path, self)
         self.current_download_thread.progress.connect(progress_window.setprogressbarval)
         self.current_download_thread.finished.connect(
@@ -467,6 +482,9 @@ class MyWindow(QWidget, Ui_mainwin):
                 with py7zr.SevenZipFile(_7z_path, mode="r") as archive:
                     archive.extractall(path=PLUGIN)
                 shutil.copy(plugin_path, game_folder)
+                if game_version == "NEKOPARA After":
+                    sig_path = os.path.join(PLUGIN, GAME_INFO[game_version]["sig_path"])
+                    shutil.copy(sig_path, game_folder)
                 self.installed_status[game_version] = True
                 QMessageBox.information(
                     self, f"通知 {APP_NAME}", f"\n{game_version} 补丁已安装\n"
@@ -490,9 +508,40 @@ class MyWindow(QWidget, Ui_mainwin):
     # 下载前比对已有文件哈希值
     def pre_hash_compare(self, install_path, game_version, plugin_hash):
         msg_box = self.hash_manager.hash_pop_window()
-        self.hash_manager.cfg_pre_hash_compare(
-            install_path, game_version, plugin_hash, self.installed_status
+        QApplication.processEvents()
+        
+        # 检查游戏可执行文件是否存在
+        game_exe = os.path.join(
+            self.selected_folder,
+            GAME_INFO[game_version]["install_path"].split("/")[0],
+            GAME_INFO[game_version]["exe"]
         )
+        
+        if not os.path.exists(game_exe):
+            self.installed_status[game_version] = False
+            msg_box.close()
+            return
+            
+        # 检查补丁文件
+        if not os.path.exists(install_path):
+            self.installed_status[game_version] = False
+            msg_box.close()
+            return
+            
+        file_hash = self.hash_manager.hash_calculate(install_path)
+        if file_hash == plugin_hash[game_version]:
+            self.installed_status[game_version] = True
+        else:
+            reply = msgbox_frame(
+                f"文件校验 {APP_NAME}",
+                f"\n检测到 {game_version} 的文件哈希值不匹配，是否重新安装？\n",
+                QMessageBox.Yes | QMessageBox.No,
+            ).exec()
+            if reply == QMessageBox.Yes:
+                self.installed_status[game_version] = False
+            else:
+                self.installed_status[game_version] = True
+                
         msg_box.close()
 
     # 开始下载文件
@@ -520,7 +569,17 @@ class MyWindow(QWidget, Ui_mainwin):
                 self.download_queue.append(
                     (url, game_folder, game_version, _7z_path, plugin_path)
                 )
-
+        game_version = "NEKOPARA After"
+        if not self.installed_status[game_version]:
+            url = config["after"]
+            game_folder = os.path.join(self.selected_folder, "NEKOPARA After")
+            _7z_path = os.path.join(PLUGIN, "after.7z")
+            plugin_path = os.path.join(
+                PLUGIN, GAME_INFO[game_version]["plugin_path"]
+            )
+            self.download_queue.append(
+                (url, game_folder, game_version, _7z_path, plugin_path)
+            )
         self.next_download_task()
 
     # 开始下载队列中的下一个任务
