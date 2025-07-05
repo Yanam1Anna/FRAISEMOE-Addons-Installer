@@ -424,27 +424,30 @@ class MyWindow(QWidget, Ui_mainwin):
             )
             return {}
 
-    # 下载参数设置
     def download_setting(self, url, game_folder, game_version, _7z_path, plugin_path):
-        game_exe = {
+        # 修改游戏可执行文件路径获取方式
+        game_exe_paths = {
             game: os.path.join(
-                self.selected_folder, info["install_path"].split("/")[0], info["exe"]
+                self.selected_folder, 
+                info["install_path"].split("/")[0], 
+                info["exe"]
             )
             for game, info in GAME_INFO.items()
         }
-        # 判断游戏是否存在，不存在则跳过
-        if (
-            game_version not in game_exe
-            or not os.path.exists(game_exe[game_version])
-            or self.installed_status[game_version]
-        ):
-            self.installed_status[game_version] = False
-            self.show_result()
+
+        # 检查游戏是否存在
+        if not os.path.exists(game_exe_paths.get(game_version, "")):
+            self.next_download_task()
             return
-        # 下载时显示进度窗口
+
+        # 如果已经安装则跳过
+        if self.installed_status[game_version]:
+            self.next_download_task()
+            return
+
         progress_window = ProgressWindow(self)
         progress_window.show()
-        # 启用下载线程
+
         self.current_download_thread = DownloadThread(url, _7z_path, self)
         self.current_download_thread.progress.connect(progress_window.setprogressbarval)
         self.current_download_thread.finished.connect(
@@ -505,9 +508,40 @@ class MyWindow(QWidget, Ui_mainwin):
     # 下载前比对已有文件哈希值
     def pre_hash_compare(self, install_path, game_version, plugin_hash):
         msg_box = self.hash_manager.hash_pop_window()
-        self.hash_manager.cfg_pre_hash_compare(
-            install_path, game_version, plugin_hash, self.installed_status
+        QApplication.processEvents()
+        
+        # 检查游戏可执行文件是否存在
+        game_exe = os.path.join(
+            self.selected_folder,
+            GAME_INFO[game_version]["install_path"].split("/")[0],
+            GAME_INFO[game_version]["exe"]
         )
+        
+        if not os.path.exists(game_exe):
+            self.installed_status[game_version] = False
+            msg_box.close()
+            return
+            
+        # 检查补丁文件
+        if not os.path.exists(install_path):
+            self.installed_status[game_version] = False
+            msg_box.close()
+            return
+            
+        file_hash = self.hash_manager.hash_calculate(install_path)
+        if file_hash == plugin_hash[game_version]:
+            self.installed_status[game_version] = True
+        else:
+            reply = msgbox_frame(
+                f"文件校验 {APP_NAME}",
+                f"\n检测到 {game_version} 的文件哈希值不匹配，是否重新安装？\n",
+                QMessageBox.Yes | QMessageBox.No,
+            ).exec()
+            if reply == QMessageBox.Yes:
+                self.installed_status[game_version] = False
+            else:
+                self.installed_status[game_version] = True
+                
         msg_box.close()
 
     # 开始下载文件
